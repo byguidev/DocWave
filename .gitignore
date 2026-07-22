@@ -1,0 +1,13 @@
+implementation_plan.md
+task.md
+
+node_modules/
+.next/
+out/
+build/
+.env
+.env.local
+*.p12
+*.pfx
+.DS_Store
+npm-debug.log*
