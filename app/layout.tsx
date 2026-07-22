@@ -12,10 +12,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docwave.example.com";
+const title = "DocWave — Ferramentas de PDF no navegador";
+const description =
+  "Mescle, divida, comprima, converta e edite PDFs sem sair do navegador. Sem upload para servidor, sem cadastro.";
+
 export const metadata: Metadata = {
-  title: "DocWave — Ferramentas de PDF no navegador",
-  description:
-    "Mescle, divida, comprima, converta e edite PDFs sem sair do navegador. Sem upload para servidor, sem cadastro.",
+  metadataBase: new URL(siteUrl),
+  title: { default: title, template: "%s" },
+  description,
+  openGraph: { title, description, siteName: "DocWave", locale: "pt_BR", type: "website" },
+  twitter: { card: "summary", title, description },
 };
 
 export default function RootLayout({
