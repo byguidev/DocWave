@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from "@cantoo/pdf-lib";
 
 export async function mergePdfs(fileByteArrays: ArrayBuffer[]): Promise<Uint8Array> {
   const outDoc = await PDFDocument.create();

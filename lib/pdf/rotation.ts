@@ -1,4 +1,4 @@
-import { degrees, type PDFPage } from "pdf-lib";
+import { degrees, type PDFPage } from "@cantoo/pdf-lib";
 import type { PdfPage } from "./types";
 
 export function applyPageRotation(page: PDFPage, pdfPage: PdfPage) {

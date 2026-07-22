@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from "@cantoo/pdf-lib";
 import type { PdfPage } from "./types";
 import { applyPageRotation } from "./rotation";
 

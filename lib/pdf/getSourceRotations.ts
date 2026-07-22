@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from "@cantoo/pdf-lib";
 
 export async function getSourceRotations(bytes: ArrayBuffer): Promise<number[]> {
   const doc = await PDFDocument.load(bytes.slice(0));

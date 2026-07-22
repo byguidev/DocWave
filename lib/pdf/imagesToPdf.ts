@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from "@cantoo/pdf-lib";
 
 export type ImageInput = { bytes: ArrayBuffer; mimeType: string };
 
