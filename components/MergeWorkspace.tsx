@@ -2,8 +2,11 @@
 
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { ArrowUp, ArrowDown, X } from "lucide-react";
 import { mergePdfs } from "@/lib/pdf/merge";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { dropzoneClass } from "@/lib/ui";
 
 type MergeFile = { id: string; file: File };
 
@@ -51,17 +54,10 @@ export function MergeWorkspace() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div
-        {...getRootProps()}
-        className={`flex min-h-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
-          isDragActive
-            ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-900"
-            : "border-zinc-300 dark:border-zinc-700"
-        }`}
-      >
+      <div {...getRootProps()} className={`min-h-40 ${dropzoneClass(isDragActive)}`}>
         <input {...getInputProps()} />
         <p className="font-medium">Arraste dois ou mais PDFs aqui, ou clique para selecionar</p>
-        <p className="text-sm text-zinc-500">Os arquivos não saem do seu navegador.</p>
+        <p className="text-sm text-muted">Os arquivos não saem do seu navegador.</p>
       </div>
 
       {files.length > 0 && (
@@ -69,7 +65,7 @@ export function MergeWorkspace() {
           {files.map((entry, index) => (
             <li
               key={entry.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-zinc-200 px-4 py-2 dark:border-zinc-700"
+              className="flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-2"
             >
               <span className="truncate text-sm">
                 {index + 1}. {entry.file.name}
@@ -79,27 +75,27 @@ export function MergeWorkspace() {
                   type="button"
                   onClick={() => moveFile(index, -1)}
                   disabled={index === 0}
-                  className="rounded px-2 py-1 text-sm hover:bg-zinc-100 disabled:opacity-30 dark:hover:bg-zinc-800"
+                  className="rounded p-1.5 text-muted hover:bg-brand-soft hover:text-brand disabled:opacity-30"
                   aria-label="Mover para cima"
                 >
-                  ↑
+                  <ArrowUp className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => moveFile(index, 1)}
                   disabled={index === files.length - 1}
-                  className="rounded px-2 py-1 text-sm hover:bg-zinc-100 disabled:opacity-30 dark:hover:bg-zinc-800"
+                  className="rounded p-1.5 text-muted hover:bg-brand-soft hover:text-brand disabled:opacity-30"
                   aria-label="Mover para baixo"
                 >
-                  ↓
+                  <ArrowDown className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => removeFile(entry.id)}
-                  className="rounded px-2 py-1 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+                  className="rounded p-1.5 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-500/10"
                   aria-label="Remover arquivo"
                 >
-                  ✕
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             </li>
@@ -107,14 +103,14 @@ export function MergeWorkspace() {
         </ul>
       )}
 
-      <button
+      <Button
         type="button"
         onClick={handleMerge}
         disabled={files.length < 2 || isMerging}
-        className="self-end rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+        className="self-end"
       >
         {isMerging ? "Mesclando…" : "Mesclar e baixar"}
-      </button>
+      </Button>
     </div>
   );
 }

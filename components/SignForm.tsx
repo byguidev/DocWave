@@ -4,6 +4,8 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { signPdf } from "@/lib/pdf/sign";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { inputClass, dropzoneClass } from "@/lib/ui";
 
 function FileField({
   label,
@@ -18,14 +20,7 @@ function FileField({
 }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept, multiple: false });
   return (
-    <div
-      {...getRootProps()}
-      className={`flex min-h-28 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed p-4 text-center transition-colors ${
-        isDragActive
-          ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-900"
-          : "border-zinc-300 dark:border-zinc-700"
-      }`}
-    >
+    <div {...getRootProps()} className={`min-h-28 ${dropzoneClass(isDragActive)}`}>
       <input {...getInputProps()} />
       <p className="text-sm font-medium">{file ? file.name : label}</p>
     </div>
@@ -88,7 +83,7 @@ export function SignForm() {
             type="password"
             value={passphrase}
             onChange={(event) => setPassphrase(event.target.value)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className={inputClass}
           />
         </label>
         <label className="flex flex-1 flex-col gap-1 text-sm">
@@ -97,21 +92,16 @@ export function SignForm() {
             type="text"
             value={reason}
             onChange={(event) => setReason(event.target.value)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className={inputClass}
           />
         </label>
-        <button
-          type="button"
-          onClick={handleSign}
-          disabled={!pdfFile || !p12File || isSigning}
-          className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-        >
+        <Button type="button" onClick={handleSign} disabled={!pdfFile || !p12File || isSigning}>
           {isSigning ? "Assinando…" : "Assinar e baixar"}
-        </button>
+        </Button>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <p className="text-xs text-zinc-500">
+      {error && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
+      <p className="text-xs text-muted">
         Você precisa de um certificado digital próprio (arquivo .p12/.pfx). O DocWave não emite
         certificados nem verifica identidade — apenas aplica a assinatura criptográfica (PKCS#7) ao
         arquivo, inteiramente no seu navegador.

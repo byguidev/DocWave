@@ -4,6 +4,8 @@ import { useState } from "react";
 import { usePdfStore } from "@/store/pdfStore";
 import { addTextWatermark } from "@/lib/pdf/watermark";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { inputClass } from "@/lib/ui";
 
 export function WatermarkForm() {
   const { fileName, bytes } = usePdfStore();
@@ -31,17 +33,12 @@ export function WatermarkForm() {
           type="text"
           value={text}
           onChange={(event) => setText(event.target.value)}
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className={inputClass}
         />
       </label>
-      <button
-        type="button"
-        onClick={handleApply}
-        disabled={isApplying || !text.trim()}
-        className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-      >
+      <Button type="button" onClick={handleApply} disabled={isApplying || !text.trim()}>
         {isApplying ? "Aplicando…" : "Aplicar e baixar"}
-      </button>
+      </Button>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { usePdfStore } from "@/store/pdfStore";
 import { pdfToImages } from "@/lib/pdf/pdfToImages";
 import { zipFiles } from "@/lib/pdf/zip";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
 
 export function PdfToImagesButton() {
   const { fileName, bytes } = usePdfStore();
@@ -29,13 +30,8 @@ export function PdfToImagesButton() {
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleConvert}
-      disabled={isConverting}
-      className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-    >
+    <Button type="button" onClick={handleConvert} disabled={isConverting}>
       {isConverting ? "Convertendo…" : "Converter para imagem"}
-    </button>
+    </Button>
   );
 }

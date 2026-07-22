@@ -5,6 +5,7 @@ import { usePdfStore } from "@/store/pdfStore";
 import { splitToPages } from "@/lib/pdf/split";
 import { zipFiles } from "@/lib/pdf/zip";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
 
 export function SplitPdfButton() {
   const { fileName, bytes, pages } = usePdfStore();
@@ -28,13 +29,8 @@ export function SplitPdfButton() {
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleSplit}
-      disabled={isSplitting}
-      className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-    >
+    <Button type="button" onClick={handleSplit} disabled={isSplitting}>
       {isSplitting ? "Dividindo…" : pages.length === 1 ? "Baixar PDF" : "Dividir e baixar (.zip)"}
-    </button>
+    </Button>
   );
 }

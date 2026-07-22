@@ -5,6 +5,8 @@ import { useDropzone } from "react-dropzone";
 import { protectPdf } from "@/lib/pdf/protect";
 import { unlockPdf } from "@/lib/pdf/unlock";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { inputClass, dropzoneClass } from "@/lib/ui";
 
 type Mode = "protect" | "unlock";
 
@@ -56,19 +58,12 @@ export function PasswordToolForm({ mode }: { mode: Mode }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div
-        {...getRootProps()}
-        className={`flex min-h-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
-          isDragActive
-            ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-900"
-            : "border-zinc-300 dark:border-zinc-700"
-        }`}
-      >
+      <div {...getRootProps()} className={`min-h-40 ${dropzoneClass(isDragActive)}`}>
         <input {...getInputProps()} />
         <p className="font-medium">
           {file ? file.name : "Arraste um PDF aqui ou clique para selecionar"}
         </p>
-        <p className="text-sm text-zinc-500">O arquivo não sai do seu navegador.</p>
+        <p className="text-sm text-muted">O arquivo não sai do seu navegador.</p>
       </div>
 
       <div className="flex flex-wrap items-end gap-3">
@@ -78,20 +73,15 @@ export function PasswordToolForm({ mode }: { mode: Mode }) {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className={inputClass}
           />
         </label>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!file || !password || isProcessing}
-          className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-        >
+        <Button type="button" onClick={handleSubmit} disabled={!file || !password || isProcessing}>
           {isProcessing ? "Processando…" : copy.action}
-        </button>
+        </Button>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
     </div>
   );
 }

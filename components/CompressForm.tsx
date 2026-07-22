@@ -4,6 +4,8 @@ import { useState } from "react";
 import { usePdfStore } from "@/store/pdfStore";
 import { compressPdf } from "@/lib/pdf/compress";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { inputClass } from "@/lib/ui";
 
 type Level = "high" | "balanced" | "max";
 
@@ -48,7 +50,7 @@ export function CompressForm() {
           <select
             value={level}
             onChange={(event) => setLevel(event.target.value as Level)}
-            className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+            className={inputClass}
           >
             {Object.entries(LEVELS).map(([value, { label }]) => (
               <option key={value} value={value}>
@@ -57,21 +59,16 @@ export function CompressForm() {
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          onClick={handleCompress}
-          disabled={isCompressing}
-          className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-        >
+        <Button type="button" onClick={handleCompress} disabled={isCompressing}>
           {isCompressing ? "Comprimindo…" : "Comprimir e baixar"}
-        </button>
+        </Button>
       </div>
       {result && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-muted">
           {formatSize(result.originalSize)} → {formatSize(result.compressedSize)}
         </p>
       )}
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-muted">
         Cada página é recomprimida como imagem JPEG. Texto selecionável não é preservado.
       </p>
     </div>

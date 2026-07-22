@@ -4,6 +4,8 @@ import { useState } from "react";
 import { usePdfStore } from "@/store/pdfStore";
 import { addPageNumbers, type PageNumberPosition } from "@/lib/pdf/pageNumbers";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { inputClass } from "@/lib/ui";
 
 export function PageNumbersForm() {
   const { fileName, bytes } = usePdfStore();
@@ -29,20 +31,15 @@ export function PageNumbersForm() {
         <select
           value={position}
           onChange={(event) => setPosition(event.target.value as PageNumberPosition)}
-          className="rounded-lg border border-zinc-300 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900"
+          className={inputClass}
         >
           <option value="bottom-center">Centralizado embaixo</option>
           <option value="bottom-right">Canto inferior direito</option>
         </select>
       </label>
-      <button
-        type="button"
-        onClick={handleApply}
-        disabled={isApplying}
-        className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-      >
+      <Button type="button" onClick={handleApply} disabled={isApplying}>
         {isApplying ? "Aplicando…" : "Aplicar e baixar"}
-      </button>
+      </Button>
     </div>
   );
 }

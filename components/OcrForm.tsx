@@ -5,6 +5,7 @@ import { usePdfStore } from "@/store/pdfStore";
 import { ocrPdf, type OcrProgress } from "@/lib/pdf/ocr";
 import { textToDocx } from "@/lib/pdf/textToDocx";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
 
 const DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
@@ -38,23 +39,18 @@ export function OcrForm() {
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button
-        type="button"
-        onClick={handleRun}
-        disabled={isRunning}
-        className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-      >
+      <Button type="button" onClick={handleRun} disabled={isRunning}>
         {isRunning ? "Reconhecendo…" : "Reconhecer texto (OCR)"}
-      </button>
+      </Button>
       {progress && (
-        <div className="w-full max-w-xs text-right text-xs text-zinc-500">
+        <div className="w-full max-w-xs text-right text-xs text-muted">
           {STATUS_LABELS[progress.status] ?? progress.status}
           {progress.totalPages > 0 && ` · página ${progress.pageIndex}/${progress.totalPages}`}
           {" · "}
           {Math.round(progress.progress * 100)}%
         </div>
       )}
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-muted">
         Reconhece português e inglês. A primeira execução baixa o modelo de idioma (alguns MB).
       </p>
     </div>

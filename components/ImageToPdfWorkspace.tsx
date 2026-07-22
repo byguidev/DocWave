@@ -2,8 +2,11 @@
 
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { ArrowUp, ArrowDown, X } from "lucide-react";
 import { imagesToPdf } from "@/lib/pdf/imagesToPdf";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
+import { dropzoneClass } from "@/lib/ui";
 
 type ImageFile = { id: string; file: File; previewUrl: string };
 
@@ -60,17 +63,10 @@ export function ImageToPdfWorkspace() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div
-        {...getRootProps()}
-        className={`flex min-h-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-8 text-center transition-colors ${
-          isDragActive
-            ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-900"
-            : "border-zinc-300 dark:border-zinc-700"
-        }`}
-      >
+      <div {...getRootProps()} className={`min-h-40 ${dropzoneClass(isDragActive)}`}>
         <input {...getInputProps()} />
         <p className="font-medium">Arraste imagens (PNG ou JPG) aqui, ou clique para selecionar</p>
-        <p className="text-sm text-zinc-500">Cada imagem vira uma página do PDF, na ordem abaixo.</p>
+        <p className="text-sm text-muted">Cada imagem vira uma página do PDF, na ordem abaixo.</p>
       </div>
 
       {images.length > 0 && (
@@ -78,36 +74,36 @@ export function ImageToPdfWorkspace() {
           {images.map((entry, index) => (
             <div
               key={entry.id}
-              className="flex flex-col items-center gap-2 rounded-lg border border-zinc-200 p-2 dark:border-zinc-700"
+              className="flex flex-col items-center gap-2 rounded-lg border border-border p-2"
             >
               <img src={entry.previewUrl} alt={entry.file.name} className="max-h-40 w-auto rounded" />
-              <span className="text-xs text-zinc-500">{index + 1}</span>
+              <span className="text-xs text-muted">{index + 1}</span>
               <div className="flex gap-1">
                 <button
                   type="button"
                   onClick={() => moveImage(index, -1)}
                   disabled={index === 0}
-                  className="rounded px-2 py-1 text-xs hover:bg-zinc-100 disabled:opacity-30 dark:hover:bg-zinc-800"
+                  className="rounded p-1 text-muted hover:bg-brand-soft hover:text-brand disabled:opacity-30"
                   aria-label="Mover para cima"
                 >
-                  ↑
+                  <ArrowUp className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
                   onClick={() => moveImage(index, 1)}
                   disabled={index === images.length - 1}
-                  className="rounded px-2 py-1 text-xs hover:bg-zinc-100 disabled:opacity-30 dark:hover:bg-zinc-800"
+                  className="rounded p-1 text-muted hover:bg-brand-soft hover:text-brand disabled:opacity-30"
                   aria-label="Mover para baixo"
                 >
-                  ↓
+                  <ArrowDown className="h-3.5 w-3.5" />
                 </button>
                 <button
                   type="button"
                   onClick={() => removeImage(entry.id)}
-                  className="rounded px-2 py-1 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
+                  className="rounded p-1 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-500/10"
                   aria-label="Remover imagem"
                 >
-                  ✕
+                  <X className="h-3.5 w-3.5" />
                 </button>
               </div>
             </div>
@@ -115,14 +111,14 @@ export function ImageToPdfWorkspace() {
         </div>
       )}
 
-      <button
+      <Button
         type="button"
         onClick={handleConvert}
         disabled={images.length === 0 || isConverting}
-        className="self-end rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
+        className="self-end"
       >
         {isConverting ? "Gerando PDF…" : "Gerar PDF e baixar"}
-      </button>
+      </Button>
     </div>
   );
 }

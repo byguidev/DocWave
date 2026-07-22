@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePdfStore } from "@/store/pdfStore";
 import { exportPdf } from "@/lib/pdf/exportPdf";
 import { downloadBytes } from "@/lib/download";
+import { Button } from "@/components/ui/Button";
 
 export function ExportPdfButton() {
   const { fileName, bytes, pages } = usePdfStore();
@@ -22,13 +23,8 @@ export function ExportPdfButton() {
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleExport}
-      disabled={isExporting}
-      className="rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-    >
+    <Button type="button" onClick={handleExport} disabled={isExporting}>
       {isExporting ? "Gerando PDF…" : "Baixar PDF"}
-    </button>
+    </Button>
   );
 }

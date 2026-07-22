@@ -2,7 +2,9 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { UploadCloud } from "lucide-react";
 import { usePdfStore } from "@/store/pdfStore";
+import { dropzoneClass } from "@/lib/ui";
 import { PageThumbnail } from "./PageThumbnail";
 
 export function PdfWorkspace() {
@@ -27,19 +29,13 @@ export function PdfWorkspace() {
 
   if (!fileName) {
     return (
-      <div
-        {...getRootProps()}
-        className={`flex min-h-64 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-10 text-center transition-colors ${
-          isDragActive
-            ? "border-zinc-900 bg-zinc-50 dark:border-zinc-100 dark:bg-zinc-900"
-            : "border-zinc-300 dark:border-zinc-700"
-        }`}
-      >
+      <div {...getRootProps()} className={`min-h-64 ${dropzoneClass(isDragActive)}`}>
         <input {...getInputProps()} />
+        <UploadCloud className="h-8 w-8 text-brand" strokeWidth={1.75} />
         <p className="font-medium">Arraste um PDF aqui ou clique para selecionar</p>
-        <p className="text-sm text-zinc-500">O arquivo não sai do seu navegador.</p>
-        {isLoading && <p className="text-sm text-zinc-500">Carregando páginas…</p>}
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        <p className="text-sm text-muted">O arquivo não sai do seu navegador.</p>
+        {isLoading && <p className="text-sm text-muted">Carregando páginas…</p>}
+        {error && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
       </div>
     );
   }
@@ -47,13 +43,13 @@ export function PdfWorkspace() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-zinc-600 dark:text-zinc-400">
+        <span className="text-sm text-muted">
           {fileName} · {pages.length} página{pages.length === 1 ? "" : "s"}
         </span>
         <button
           type="button"
           onClick={reset}
-          className="text-sm text-zinc-500 underline hover:text-zinc-900 dark:hover:text-zinc-100"
+          className="text-sm text-brand underline-offset-2 hover:underline"
         >
           Trocar arquivo
         </button>
