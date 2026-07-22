@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { PdfPage } from "@/lib/pdf/types";
 import { renderThumbnails } from "@/lib/pdf/renderThumbnails";
+import { getSourceRotations } from "@/lib/pdf/getSourceRotations";
 
 type PdfStoreState = {
   fileName: string | null;
@@ -26,10 +27,14 @@ export const usePdfStore = create<PdfStoreState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const bytes = await file.arrayBuffer();
-      const thumbnailUrls = await renderThumbnails(bytes);
+      const [thumbnailUrls, sourceRotations] = await Promise.all([
+        renderThumbnails(bytes),
+        getSourceRotations(bytes),
+      ]);
       const pages: PdfPage[] = thumbnailUrls.map((thumbnailUrl, index) => ({
         id: `${file.name}-${index}-${crypto.randomUUID()}`,
         sourcePageIndex: index,
+        sourceRotation: sourceRotations[index] ?? 0,
         rotation: 0,
         thumbnailUrl,
       }));
